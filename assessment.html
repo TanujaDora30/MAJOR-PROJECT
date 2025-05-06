@@ -9,14 +9,12 @@
       font-family: 'Segoe UI', sans-serif;
       background: #f7faff;
       margin: 0;
-      padding: 40px 20px;
+      padding: 30px 20px;
     }
 
-    h1 {
+    h1, h2 {
       text-align: center;
       color: #2c3e50;
-      font-size: 2.2rem;
-      margin-bottom: 30px;
     }
 
     .topics {
@@ -24,7 +22,7 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 30px auto;
     }
 
     .topic-card {
@@ -47,11 +45,49 @@
       border-color: #2980b9;
     }
 
-    @media (max-width: 600px) {
-      .topic-card {
-        font-size: 1rem;
-        padding: 16px;
-      }
+    .quiz-container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question p {
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-left: 10px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    #score {
+      font-size: 18px;
+      color: green;
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -59,41 +95,123 @@
 
   <h1>🏆 Skill Assessment - Choose a Topic</h1>
 
-  <div class="topics">
-    <div class="topic-card" onclick="startQuiz('html')">HTML</div>
-    <div class="topic-card" onclick="startQuiz('css')">CSS</div>
-    <div class="topic-card" onclick="startQuiz('javascript')">JavaScript</div>
-    <div class="topic-card" onclick="startQuiz('react')">React.js</div>
-    <div class="topic-card" onclick="startQuiz('node')">Node.js</div>
-    <div class="topic-card" onclick="startQuiz('python')">Python</div>
-    <div class="topic-card" onclick="startQuiz('java')">Java</div>
-    <div class="topic-card" onclick="startQuiz('cpp')">C++</div>
-    <div class="topic-card" onclick="startQuiz('ds')">Data Structures & Algorithms</div>
-    <div class="topic-card" onclick="startQuiz('sql')">SQL</div>
-    <div class="topic-card" onclick="startQuiz('mongodb')">MongoDB</div>
-    <div class="topic-card" onclick="startQuiz('git')">Git & GitHub</div>
-    <div class="topic-card" onclick="startQuiz('os')">Operating Systems Basics</div>
-    <div class="topic-card" onclick="startQuiz('ux')">Web Design & UX</div>
-    <div class="topic-card" onclick="startQuiz('softskills')">Communication & Soft Skills</div>
+  <div class="topics" id="topicContainer">
+    <div class="topic-card" onclick="loadQuiz('html')">HTML</div>
+    <div class="topic-card" onclick="loadQuiz('css')">CSS</div>
+    <div class="topic-card" onclick="loadQuiz('js')">JavaScript</div>
+    <div class="topic-card" onclick="loadQuiz('js')">React.js</div>
+    <div class="topic-card" onclick="loadQuiz('js')">Node.js</div>
+    <div class="topic-card" onclick="loadQuiz('js')">Python</div>
+    <div class="topic-card" onclick="loadQuiz('js')">Java</div>
+    <div class="topic-card" onclick="loadQuiz('js')">C++</div>
+    <div class="topic-card" onclick="loadQuiz('js')">DSA</div>
+    <div class="topic-card" onclick="loadQuiz('js')">SQL</div>
+    <div class="topic-card" onclick="loadQuiz('js')">MongoDB</div>
+    <div class="topic-card" onclick="loadQuiz('js')">GIT/GITHUB</div>
+    <div class="topic-card" onclick="loadQuiz('js')">Operating Systems Basics</div>
+    <div class="topic-card" onclick="loadQuiz('js')">Web Design & UX</div>
+    <div class="topic-card" onclick="loadQuiz('js')">Communication & Soft Skills</div>
+
   </div>
-  
-  /*<script>
-    function startQuiz(topic) {
-      // Redirect to the quiz page with the topic as a query parameter
-      window.location.href = `quiz.html?topic=${topic}`;
+
+  <div class="quiz-container" id="quizContainer" style="display: none;">
+    <h2 id="quizTitle"></h2>
+    <form id="quizForm"></form>
+    <button onclick="submitQuiz()">Submit Quiz</button>
+    <div id="score"></div>
+  </div>
+
+  <script>
+    const quizData = {
+      html: {
+        title: "HTML Quiz",
+        questions: [
+          { q: "What does HTML stand for?", options: ["HyperText Markup Language", "Home Tool Markup Language", "Hyperlinks Text Mark Language"], answer: "HyperText Markup Language" },
+          { q: "Which attribute is used to define the destination of a hyperlink?",
+    options: [
+      "href",
+      "src",
+      "alt"
+    ],
+    answer: "href" },
+          { q: "Which HTML element is used to define the main content of a document?",
+    options: [
+      "main",
+      "body",
+      "content"
+    ],
+    answer: "main" },
+          { q: "What is the purpose of the 'alt' attribute in the <img> tag?",
+    options: [
+      "To display an alternate image if the original is unavailable",
+      "To provide alternative text for the image",
+      "To align the image to the left or right"
+    ],
+    answer: "To provide alternative text for the image" },
+          { q:  "Which attribute specifies an image source?",
+    "options": ["href", "src", "link", "img"],
+    "answer": "src" }
+        ]
+      },
+      
+      css: {
+        title: "CSS Quiz",
+        questions: [
+          { q: "What does CSS stand for?", options: ["Cascading Style Sheets", "Creative Style Sheets", "Computer Style Sheets"], answer: "Cascading Style Sheets" },
+          { q: "Which property changes text color?", options: ["color", "text-color", "font-color"], answer: "color" },
+          { q: "Which property controls text size?", options: ["font-size", "text-size", "text-style"], answer: "font-size" },
+          { q: "Which symbol starts a class in CSS?", options: [".", "#", "&"], answer: "." },
+          { q: "How do you add background color?", options: ["background-color", "bg", "color"], answer: "background-color" }
+        ]
+      },
+      js: {
+        title: "JavaScript Quiz",
+        questions: [
+          { q: "Which keyword declares a variable?", options: ["var", "int", "v"], answer: "var" },
+          { q: "How do you write a comment?", options: ["// comment", "# comment", "<!-- comment -->"], answer: "// comment" },
+          { q: "Which symbol compares values strictly?", options: ["===", "==", "="], answer: "===" },
+          { q: "What is used to define a function?", options: ["function", "define", "method"], answer: "function" },
+          { q: "Which method outputs to console?", options: ["console.log()", "print()", "echo()"], answer: "console.log()" }
+        ]
+      }
+    };
+
+    function loadQuiz(topic) {
+      const data = quizData[topic];
+      const quizForm = document.getElementById("quizForm");
+      const title = document.getElementById("quizTitle");
+      const container = document.getElementById("quizContainer");
+
+      document.getElementById("topicContainer").style.display = "none";
+      container.style.display = "block";
+      title.innerText = data.title;
+
+      quizForm.innerHTML = "";
+      data.questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        let html = `<p>${i + 1}. ${q.q}</p>`;
+        q.options.forEach(opt => {
+          html += `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>`;
+        });
+        div.innerHTML = html;
+        quizForm.appendChild(div);
+      });
     }
-    fetch('questions.json')
-  .then(response => response.json())
-  .then(data => {
-    // Use data.html, data.css, etc.
-    console.log(data);
-  })
-  .catch(error => console.error('Error loading questions:', error));
-  
 
-  </script>//
-  <script src="js/assessment.js"></script>
+    function submitQuiz() {
+      const quizForm = document.getElementById("quizForm");
+      const inputs = quizForm.querySelectorAll("input[type='radio']:checked");
+      const topic = document.getElementById("quizTitle").innerText.split(" ")[0].toLowerCase();
+      const questions = quizData[topic].questions;
+      let score = 0;
 
+      inputs.forEach((input, i) => {
+        if (input.value === questions[i].answer) score++;
+      });
 
+      document.getElementById("score").innerText = `You scored ${score} out of ${questions.length}`;
+    }
+  </script>
 </body>
 </html>
